@@ -10,44 +10,64 @@
 		<div id="root"></div>
 
 		<script type="text/babel">
-			const GuGuDan = () => {
-				const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
-				const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
-				const [value, setValue] = React.useState("");
-				const [result, setResult] = React.useState("");
-				const inputRef = React.useRef(null);
+			class GuGuDan extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {
+						first: Math.ceil(Math.random() * 9),
+						second: Math.ceil(Math.random() * 9),
+						value: "",
+						result: "",
+					};
+				}
 
-				const onChangeInput = (e) => {
-					setValue(e.target.value);
-				};
-
-				const onSubmitForm = (e) => {
+				onSubmit = (e) => {
 					e.preventDefault();
-					if (parseInt(value) === first * second) {
-						setResult(`${first} * ${second} = ${value} 정답입니다!`);
-						setFirst(Math.ceil(Math.random() * 9));
-						setSecond(Math.ceil(Math.random() * 9));
-						setValue("");
+					if (parseInt(this.state.value) === this.state.first * this.state.second) {
+						this.setState((prevState) => {
+							return {
+								result: `${prevState.first} * ${prevState.second} = ${prevState.value} 정답입니다!`,
+								first: Math.ceil(Math.random() * 9),
+								second: Math.ceil(Math.random() * 9),
+								value: "",
+							};
+						});
 					} else {
-						setResult(`${first} * ${second} = ${value} 땡입니다!`);
-						setValue("");
+						this.setState((prevState) => {
+							return {
+								result: `${prevState.first} * ${prevState.second} = ${prevState.value} 땡입니다!`,
+								value: "",
+							};
+						});
 					}
-					inputRef.current.focus();
+					this.input.focus();
 				};
 
-				return (
-					<div>
+				onChange = (e) => {
+					this.setState({ value: e.target.value });
+				};
+
+				input;
+
+				onRefInput = (c) => {
+					this.input = c;
+				};
+
+				render() {
+					return (
 						<div>
-							{first}곱하기{second}는?
+							<div>
+								{this.state.first}곱하기{this.state.second}는?
+							</div>
+							<form onSubmit={this.onSubmit}>
+								<input ref={this.onRefInput} type="number" value={this.state.value} onChange={this.onChange} />
+								<button>입력!</button>
+							</form>
+							<div>{this.state.result}</div>
 						</div>
-						<form onSubmit={onSubmitForm}>
-							<input ref={inputRef} type="number" value={value} onChange={onChangeInput} />
-							<button>입력!</button>
-						</form>
-						<div>{result}</div>
-					</div>
-				);
-			};
+					);
+				}
+			}
 		</script>
 		<script type="text/babel">
 			ReactDOM.render(<GuGuDan />, document.querySelector("#root"));
