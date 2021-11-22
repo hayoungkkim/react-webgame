@@ -12,12 +12,8 @@ class ResponseCheck extends Component {
 	endTime;
 
 	onClickScreen = () => {
-		const { state, message, result } = this.state;
+		const { state } = this.state;
 		if (state === "waiting") {
-			this.setState({
-				state: "ready",
-				message: "초록색이 되면 클릭하세요.",
-			});
 			this.timeout = setTimeout(() => {
 				this.setState({
 					state: "now",
@@ -25,6 +21,10 @@ class ResponseCheck extends Component {
 				});
 				this.startTime = new Date();
 			}, Math.floor(Math.random() * 1000) + 2000); // 2초~3초 랜덤
+			this.setState({
+				state: "ready",
+				message: "초록색이 되면 클릭하세요.",
+			});
 		} else if (state === "ready") {
 			clearTimeout(this.timeout);
 			this.setState({
