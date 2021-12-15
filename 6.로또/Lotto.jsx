@@ -42,6 +42,10 @@ const Lotto = () => {
 	}, [timeouts.current]); // 빈 배열이면 componentDidMount와 동일
 	// 배열에 요소가 있으면 componentDidMount랑 componentDidUpdate 둘 다 수행
 
+	useEffect(() => {
+		console.log("로또 숫자를 생성합니다.");
+	}, [winNumbers]);
+
 	const onClickRedo = useCallback(() => {
 		console.log("onClickRedo");
 		console.log(winNumbers);
